@@ -1,0 +1,65 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<import resource="Spring-Datasource.xml" />
+	<import resource="Spring-Customer.xml" />
+
+	<context:component-scan base-package="com.xufan.testaop"></context:component-scan>
+	<context:annotation-config></context:annotation-config>
+	
+	<bean id="helloBean" class="com.xufan.testspring.HelloWorld">
+		<property name="name" value="zhangsan" />
+	</bean>
+	
+	
+	<bean id="OutputHelper" class="com.xufan.testsetin.OutputHelper">
+		<property name="outputGenerator" ref="JsonOutputGenerator" />
+	</bean>
+	<!--
+	//构造函数注入
+	<bean id="OutputHelper" class="com.yiibai.output.OutputHelper">
+		<constructor-arg>
+			<bean class="com.yiibai.output.impl.CsvOutputGenerator" />
+		</constructor-arg>
+	</bean>
+	-->
+	<!--
+	//set注入
+	<bean id="OutputHelper" class="com.yiibai.output.OutputHelper">
+		<property name="outputGenerator">
+			<ref bean="CsvOutputGenerator" />
+		</property>
+	</bean>
+	-->
+	<bean id="CsvOutputGenerator" class="com.xufan.testsetin.CsvOutputGenerator" />
+	<bean id="JsonOutputGenerator" class="com.xufan.testsetin.JsonOutputGenerator" />
+	
+	<!--
+	<bean id="dateFormat" class="java.text.SimpleDateFormat">
+		<constructor-arg value="yyyy-MM-dd" />
+	</bean>
+	<bean id="customer" class="com.xufan.testdate.Customer">
+		<property name="date">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2015-12-31" />
+			</bean>
+		</property>
+	</bean>
+	-->
+	<bean id="customerServiceProxy" 
+                 class="org.springframework.aop.framework.ProxyFactoryBean">
+
+		<property name="target" ref="PPP" />
+
+		<property name="interceptorNames">
+			<list>
+				<value>AAA</value>
+			</list>
+		</property>
+	</bean>
+</beans>
